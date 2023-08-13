@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mapsFragment">
+
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.amk.maps.MapsFragment"
+        android:label="MapsFragment" >
+        <action
+            android:id="@+id/action_mapsFragment_to_listCoordinatesFragment"
+            app:destination="@id/listCoordinatesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listCoordinatesFragment"
+        android:name="com.amk.listcoord.ListCoordinatesFragment"
+        android:label="ListCoordinatesFragment" >
+        <action
+            android:id="@+id/action_listCoordinatesFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
+</navigation>
