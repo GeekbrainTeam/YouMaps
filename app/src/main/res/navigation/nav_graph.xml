@@ -7,17 +7,13 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.amk.maps.MapsFragment"
-        android:label="MapsFragment" >
-        <action
-            android:id="@+id/action_mapsFragment_to_listCoordinatesFragment"
-            app:destination="@id/listCoordinatesFragment" />
-    </fragment>
+        android:label="MapsFragment" />
     <fragment
         android:id="@+id/listCoordinatesFragment"
         android:name="com.amk.listcoord.ListCoordinatesFragment"
-        android:label="ListCoordinatesFragment" >
-        <action
-            android:id="@+id/action_listCoordinatesFragment_to_mapsFragment"
-            app:destination="@id/mapsFragment" />
-    </fragment>
+        android:label="ListCoordinatesFragment" />
+    <dialog
+        android:id="@+id/saveCoordinateDialogFragment"
+        android:name="com.amk.youmaps.ui.SaveCoordinateDialogFragment"
+        android:label="SaveCoordinateDialogFragment" />
 </navigation>

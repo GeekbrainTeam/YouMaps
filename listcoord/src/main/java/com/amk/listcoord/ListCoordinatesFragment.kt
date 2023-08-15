@@ -14,28 +14,17 @@ import com.amk.listcoord.presenter.ListCoordinatesViewModel
 import com.amk.listcoord.ui.CoordinatesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val ARG_PARAM1 = "coordinates"
-
 @AndroidEntryPoint
 class ListCoordinatesFragment : Fragment() {
 
-//    private var param1: String? = null
     private lateinit var binding: FragmentListCoordBinding
 
     private val viewModel by viewModels<ListCoordinatesViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        recyclerView = container?.findViewById(R.id.recyclerView)!!
         binding = FragmentListCoordBinding.inflate(inflater, container, false)
         val manager = LinearLayoutManager(this.context)
         binding.recyclerView.layoutManager = manager
@@ -50,16 +39,5 @@ class ListCoordinatesFragment : Fragment() {
             }
         }
         return binding.root
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance(/*param1: String*/) =
-            ListCoordinatesFragment()/*.apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                }
-            }*/
     }
 }

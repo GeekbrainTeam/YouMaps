@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.amk.core.Coordinate
+import com.amk.core.CoordinateWithName
 import com.amk.listcoord.R
 
 class CoordinatesAdapter(
-    private val data: List<Coordinate>
+    private val data: List<CoordinateWithName>
 ) : RecyclerView.Adapter<CoordinatesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

@@ -1,4 +1,4 @@
-package com.amk.listcoord.presenter
+package com.amk.maps.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ListCoordinatesViewModel @Inject constructor(
+class MapsViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
