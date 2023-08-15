@@ -1,16 +1,24 @@
 package com.amk.maps
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.amk.core.CoordinateWithName
+import com.amk.core.LATITUDE_KEY
+import com.amk.core.LONGITUDE_KEY
 import com.amk.core.MainViewModel
+import com.amk.core.NAME_POINT_KEY
+import com.amk.core.REQUEST_COORDINATE_KEY
+import com.amk.core.REQUEST_ZOOM_KEY
 import com.amk.core.Result
+import com.amk.core.ZOOM_KEY
 import com.amk.maps.presentation.MapsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,6 +27,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.RoundingMode
 
 @AndroidEntryPoint
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -27,6 +36,22 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private val activityViewModel: MainViewModel by activityViewModels()
 
     private lateinit var map: GoogleMap
+    private var zoom: Float = 11f
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(REQUEST_ZOOM_KEY) { _, bundle ->
+            zoom = bundle.getString(ZOOM_KEY)?.toFloatOrNull() ?: zoom
+        }
+        setFragmentResultListener(REQUEST_COORDINATE_KEY) { _, bundle ->
+            saveCoordinate(bundle)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        setFragmentResult(ZOOM_KEY, bundleOf("zoomKey" to zoom.toString()))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +76,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 is Result.Success -> {
                     val coordinate = result.data.lastOrNull() ?: COORDINATE_WithName_DEFAULT
                     val position = LatLng(coordinate.latitude, coordinate.longitude)
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, activityViewModel.zoomMap))
+                    map.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            position,
+                            zoom
+                        )
+                    )
                     map.addMarker(MarkerOptions().position(position))
                 }
             }
@@ -60,42 +90,34 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             changeCoordinate(googleMap)
         }
         googleMap.setOnCameraMoveListener {
-            activityViewModel.setZoom(googleMap.cameraPosition.zoom)
+            zoom = googleMap.cameraPosition.zoom
         }
-        googleMap.setOnCameraMoveStartedListener {
-            Log.d("MKV2", "setOnCameraMoveStartedListener ")
-        }
-        googleMap.setOnCircleClickListener {
-            Log.d("MKV2", "setOnCircleClickListener ")
-        }
-        googleMap.setOnGroundOverlayClickListener {
-            Log.d("MKV2", "setOnGroundOverlayClickListener ")
-        }
-        googleMap.setOnInfoWindowClickListener {
-            Log.d("MKV2", "setOnInfoWindowClickListener ")
-        }
-        googleMap.setOnInfoWindowCloseListener {
-            Log.d("MKV2", "setOnInfoWindowCloseListener ")
-        }
-        googleMap.setOnInfoWindowLongClickListener {
-            Log.d("MKV2", "setOnInfoWindowLongClickListener ")
-        }
-        googleMap.setOnMapClickListener {
-            Log.d("MKV2", "setOnMapClickListener ")
-        }
-        googleMap.setOnPoiClickListener {
-            Log.d("MKV2", "setOnPoiClickListener ")
-        }
-        googleMap.setOnPolylineClickListener {
-            Log.d("MKV2", "setOnPolylineClickListener ")
+    }
+
+    private fun saveCoordinate(bundle: Bundle) {
+        val latitude: Double? = bundle.getString(LATITUDE_KEY)?.toDoubleOrNull()
+        val longitude: Double? = bundle.getString(LONGITUDE_KEY)?.toDoubleOrNull()
+        val name = bundle.getString(NAME_POINT_KEY)
+
+        val isCoordinateExist =
+            latitude.isNotNull() && longitude.isNotNull() && name?.isNotBlank() == true
+
+        if (isCoordinateExist) {
+            viewModel.saveNewCoordinate(
+                CoordinateWithName(
+                    name = name!!,
+                    latitude = latitude!!,
+                    longitude = longitude!!,
+                )
+            )
         }
     }
 
     private fun changeCoordinate(googleMap: GoogleMap) {
         val position = googleMap.projection.visibleRegion.latLngBounds.center
         activityViewModel.onChangeCoordinate(
-            lat = position.latitude,
-            long = position.longitude,
+            lat = position.latitude.round(),
+            long = position.longitude.round(),
         )
     }
 
@@ -103,8 +125,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         private val COORDINATE_WithName_DEFAULT = CoordinateWithName(
             name = "name",
-            latitude = 59.915675,
-            longitude = 30.302950,
+            latitude = 59.9156,
+            longitude = 30.3029,
         )
     }
 }
+
+private fun Double?.isNotNull(): Boolean = this != null
+
+private fun Double.round() =
+    this.toBigDecimal().setScale(4, RoundingMode.UP).toDouble()

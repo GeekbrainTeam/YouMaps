@@ -5,7 +5,6 @@ import com.amk.core.database.CoordinateDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import java.math.RoundingMode
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -40,9 +39,6 @@ class RepositoryImpl @Inject constructor(
 private fun CoordinateWithName.mapToCoordinateDB(): CoordinateDB =
     CoordinateDB(
         name = name,
-        latitude = latitude.toRoundString(),
-        longitude = longitude.toRoundString(),
+        latitude = latitude.toString(),
+        longitude = longitude.toString(),
     )
-
-private fun Double.toRoundString() =
-    this.toBigDecimal().setScale(4, RoundingMode.UP).toString()

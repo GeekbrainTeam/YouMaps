@@ -1,32 +1,30 @@
 package com.amk.youmaps.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
-import com.amk.core.CoordinateWithName
-import com.amk.core.MainViewModel
+import androidx.fragment.app.setFragmentResult
+import com.amk.core.LATITUDE_KEY
+import com.amk.core.LONGITUDE_KEY
+import com.amk.core.NAME_POINT_KEY
+import com.amk.core.REQUEST_COORDINATE_KEY
 import com.amk.youmaps.databinding.FragmentSaveCoordinateDialogBinding
-
-private const val ARG_PARAM1 = "Latitude"
-private const val ARG_PARAM2 = "Longitude"
 
 class SaveCoordinateDialogFragment : DialogFragment() {
 
-    private var param1: Double? = null
-    private var param2: Double? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
-    private val activityViewModel: MainViewModel by activityViewModels()
     private lateinit var binding: FragmentSaveCoordinateDialogBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getDouble(ARG_PARAM1)
-            param2 = it.getDouble(ARG_PARAM2)
+            latitude = it.getDouble(LATITUDE)
+            longitude = it.getDouble(LONGITUDE)
         }
     }
 
@@ -41,19 +39,24 @@ class SaveCoordinateDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            param1?.let { latitude.setText(it.toString()) }
-            param2?.let { longitude.setText(it.toString()) }
+            latitude?.let { latitudeEditView.setText(it.toString()) }
+            longitude?.let { longitudeEditView.setText(it.toString()) }
             save.setOnClickListener {
-                Log.d("MKV2", "name:${name.text.toString()} ${name.transitionName}")
-                activityViewModel.saveNewCoordinate(
-                    CoordinateWithName(
-                        name = name.text.toString(),
-                        latitude = latitude.text.toString().toDouble(),
-                        longitude = longitude.text.toString().toDouble(),
+                setFragmentResult(
+                    REQUEST_COORDINATE_KEY,
+                    bundleOf(
+                        NAME_POINT_KEY to name.text.toString(),
+                        LATITUDE_KEY to latitudeEditView.text.toString(),
+                        LONGITUDE_KEY to longitudeEditView.text.toString(),
                     )
                 )
                 dismiss()
             }
         }
+    }
+
+    private companion object{
+        private const val LATITUDE = "Latitude"
+        private const val LONGITUDE = "Longitude"
     }
 }

@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.amk.core.CoordinateWithName
 import com.amk.core.Repository
 import com.amk.core.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,12 +26,18 @@ class MapsViewModel @Inject constructor(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
+        viewModelScope.launch{
             repository
                 .getListCoordinates()
                 .collect { result ->
                     _state.value = result
                 }
+        }
+    }
+
+    fun saveNewCoordinate(coordinateWithName: CoordinateWithName){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.saveNewCoordinate(coordinateWithName = coordinateWithName)
         }
     }
 }

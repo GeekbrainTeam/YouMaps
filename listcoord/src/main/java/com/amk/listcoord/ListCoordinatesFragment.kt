@@ -29,7 +29,6 @@ class ListCoordinatesFragment : Fragment() {
         val manager = LinearLayoutManager(this.context)
         binding.recyclerView.layoutManager = manager
         viewModel.state.observe(viewLifecycleOwner) { result ->
-            Log.d("MKV2", "observe:result ${result} ")
             when (result) {
                 is Result.Error -> {}
                 is Result.Loading -> {}
