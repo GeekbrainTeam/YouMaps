@@ -18,13 +18,9 @@ class MainViewModel @Inject constructor(
     val selectedCoordinateWithName: StateFlow<Coordinate>
         get() = _selectedCoordinate
 
-    private companion object {
-
-        private val COORDINATE_DEFAULT = Coordinate(
-            latitude = 59.915675,
-            longitude = 30.302950,
-        )
-    }
+    private var _zoomMap: Float = 11f
+    val zoomMap: Float
+        get() = _zoomMap
 
     fun onChangeCoordinate(lat: Double, long: Double) {
         _selectedCoordinate.value = Coordinate(
@@ -37,5 +33,17 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repositoryImpl.saveNewCoordinate(coordinateWithName = coordinateWithName)
         }
+    }
+
+    fun setZoom(newZoomValue:Float){
+        _zoomMap = newZoomValue
+    }
+
+    private companion object {
+
+        private val COORDINATE_DEFAULT = Coordinate(
+            latitude = 59.915675,
+            longitude = 30.302950,
+        )
     }
 }

@@ -24,9 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private val viewModel: MapsViewModel by viewModels()
-    private val activityViewModel:MainViewModel by activityViewModels ()
-
-    private var zoomMap: Float = 11f
+    private val activityViewModel: MainViewModel by activityViewModels()
 
     private lateinit var map: GoogleMap
 
@@ -47,58 +45,53 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         viewModel.state.observe(viewLifecycleOwner) { result ->
-            Log.d("MKV2", "observe:result ${result} ")
             when (result) {
                 is Result.Error -> {}
                 is Result.Loading -> {}
                 is Result.Success -> {
-                    val coordinate = result.data.lastOrNull()?:COORDINATE_WithName_DEFAULT
+                    val coordinate = result.data.lastOrNull() ?: COORDINATE_WithName_DEFAULT
                     val position = LatLng(coordinate.latitude, coordinate.longitude)
-                    map.addMarker(MarkerOptions().position(position).title("Marker in default"))
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, zoomMap))
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, activityViewModel.zoomMap))
+                    map.addMarker(MarkerOptions().position(position))
                 }
             }
         }
         googleMap.setOnCameraIdleListener {
-            extracted(googleMap)
+            changeCoordinate(googleMap)
         }
-//        googleMap.setOnCameraMoveListener {
-//            Log.d("MKV2", "setOnCameraMoveListener ")
-////            extracted(googleMap)
-//        }
-//        googleMap.setOnCameraMoveListener {
-//            Log.d("MKV2", "setOnCameraMoveListener ")
-//        }
-//        googleMap.setOnCameraMoveStartedListener {
-//            Log.d("MKV2", "setOnCameraMoveStartedListener ")
-//        }
-//        googleMap.setOnCircleClickListener {
-//            Log.d("MKV2", "setOnCircleClickListener ")
-//        }
-//        googleMap.setOnGroundOverlayClickListener {
-//            Log.d("MKV2", "setOnGroundOverlayClickListener ")
-//        }
-//        googleMap.setOnInfoWindowClickListener {
-//            Log.d("MKV2", "setOnInfoWindowClickListener ")
-//        }
-//        googleMap.setOnInfoWindowCloseListener {
-//            Log.d("MKV2", "setOnInfoWindowCloseListener ")
-//        }
-//        googleMap.setOnInfoWindowLongClickListener {
-//            Log.d("MKV2", "setOnInfoWindowLongClickListener ")
-//        }
-//        googleMap.setOnMapClickListener {
-//            Log.d("MKV2", "setOnMapClickListener ")
-//        }
-//        googleMap.setOnPoiClickListener {
-//            Log.d("MKV2", "setOnPoiClickListener ")
-//        }
-//        googleMap.setOnPolylineClickListener {
-//            Log.d("MKV2", "setOnPolylineClickListener ")
-//        }
+        googleMap.setOnCameraMoveListener {
+            activityViewModel.setZoom(googleMap.cameraPosition.zoom)
+        }
+        googleMap.setOnCameraMoveStartedListener {
+            Log.d("MKV2", "setOnCameraMoveStartedListener ")
+        }
+        googleMap.setOnCircleClickListener {
+            Log.d("MKV2", "setOnCircleClickListener ")
+        }
+        googleMap.setOnGroundOverlayClickListener {
+            Log.d("MKV2", "setOnGroundOverlayClickListener ")
+        }
+        googleMap.setOnInfoWindowClickListener {
+            Log.d("MKV2", "setOnInfoWindowClickListener ")
+        }
+        googleMap.setOnInfoWindowCloseListener {
+            Log.d("MKV2", "setOnInfoWindowCloseListener ")
+        }
+        googleMap.setOnInfoWindowLongClickListener {
+            Log.d("MKV2", "setOnInfoWindowLongClickListener ")
+        }
+        googleMap.setOnMapClickListener {
+            Log.d("MKV2", "setOnMapClickListener ")
+        }
+        googleMap.setOnPoiClickListener {
+            Log.d("MKV2", "setOnPoiClickListener ")
+        }
+        googleMap.setOnPolylineClickListener {
+            Log.d("MKV2", "setOnPolylineClickListener ")
+        }
     }
 
-    private fun extracted(googleMap: GoogleMap) {
+    private fun changeCoordinate(googleMap: GoogleMap) {
         val position = googleMap.projection.visibleRegion.latLngBounds.center
         activityViewModel.onChangeCoordinate(
             lat = position.latitude,
@@ -107,6 +100,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private companion object {
+
         private val COORDINATE_WithName_DEFAULT = CoordinateWithName(
             name = "name",
             latitude = 59.915675,

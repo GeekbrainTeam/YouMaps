@@ -38,14 +38,15 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.maps -> {
                 if (navController.currentDestination?.id != R.id.mapsFragment) {
-                    navController.navigate(R.id.mapsFragment)
+                    navController.navigate(R.id.action_listCoordinatesFragment_to_mapsFragment)
+                } else {
+                    val bundle = Bundle()
+                    with(viewModel.selectedCoordinateWithName.value) {
+                        bundle.putDouble("Latitude", latitude)
+                        bundle.putDouble("Longitude", longitude)
+                        navController.navigate(R.id.saveCoordinateDialogFragment, bundle)
+                    }
                 }
-                val bundle = Bundle()
-                with(viewModel.selectedCoordinateWithName.value) {
-                    bundle.putDouble("Latitude", latitude)
-                    bundle.putDouble("Longitude", longitude)
-                }
-                navController.navigate(R.id.saveCoordinateDialogFragment, bundle)
                 true
             }
 

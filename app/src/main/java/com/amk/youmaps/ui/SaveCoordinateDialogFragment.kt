@@ -52,6 +52,7 @@ class SaveCoordinateDialogFragment : DialogFragment() {
                         longitude = longitude.text.toString().toDouble(),
                     )
                 )
+                dismiss()
             }
         }
     }
