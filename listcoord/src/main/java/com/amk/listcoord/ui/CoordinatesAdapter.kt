@@ -31,7 +31,7 @@ class CoordinatesAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(coordinateWithName: CoordinateWithName) {
-            itemBinding.title.text =
+            itemBinding.nameTextView.text =
                 view.context.getStrings(R.string.title_coordinate, coordinateWithName.name)
             itemBinding.coordinate.text = view.context.getStrings(
                 R.string.coordinate,
