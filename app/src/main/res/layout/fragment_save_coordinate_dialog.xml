@@ -2,49 +2,98 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="12dp">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/coordinateTitle"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/name"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nameEditLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/name"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/latitudeEditView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameEditField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/longitudeEditView"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/latitudeEditLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/latitude"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/latitudeEditView" />
+        app:layout_constraintTop_toBottomOf="@+id/nameEditLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/latitudeEditField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/longitudeEditLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/longitude"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/latitudeEditLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/longitudeEditField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
         android:clickable="true"
         android:focusable="true"
+        android:gravity="end"
+        android:padding="10dp"
         android:text="@string/save"
+        android:textColor="@color/green"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/longitudeEditView" />
+        app:layout_constraintTop_toBottomOf="@+id/longitudeEditLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/nameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"

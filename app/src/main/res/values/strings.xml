@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">YouMaps</string>
-    <string name="save">Сохранить</string>
+    <string name="save">СОХРАНИТЬ</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name">Название точки</string>
+    <string name="latitude">Широта</string>
+    <string name="longitude">Долгота</string>
+    <string name="coordinateTitle">Координаты</string>
 </resources>

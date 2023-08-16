@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
+        val bundle = setCoordinateInBundle()
+        navController.setGraph(R.navigation.nav_graph, bundle)
         return true
     }
 
@@ -40,12 +42,8 @@ class MainActivity : AppCompatActivity() {
                 if (navController.currentDestination?.id != R.id.mapsFragment) {
                     navController.navigate(R.id.action_listCoordinatesFragment_to_mapsFragment)
                 } else {
-                    val bundle = Bundle()
-                    with(viewModel.selectedCoordinateWithName.value) {
-                        bundle.putDouble("Latitude", latitude)
-                        bundle.putDouble("Longitude", longitude)
-                        navController.navigate(R.id.saveCoordinateDialogFragment, bundle)
-                    }
+                    val bundle = setCoordinateInBundle()
+                    navController.navigate(R.id.saveCoordinateDialogFragment, bundle)
                 }
                 true
             }
@@ -57,5 +55,14 @@ class MainActivity : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setCoordinateInBundle(): Bundle {
+        val bundle = Bundle()
+        with(viewModel.selectedCoordinateWithName.value) {
+            bundle.putDouble("Latitude", latitude)
+            bundle.putDouble("Longitude", longitude)
+        }
+        return bundle
     }
 }
